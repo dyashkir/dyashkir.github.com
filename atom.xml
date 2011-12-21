@@ -1,7 +1,7 @@
 ---
 layout: nil
 ---
-<!-->
+
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
@@ -9,7 +9,7 @@ layout: nil
  <link href="http://dyashkir.github.com/atom.xml" rel="self"/>
  <link href="http://dyashkir.github.com.com/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://dyashkir.github.com.com/</id>
+ <id>http://dyashkir.github.com/</id>
  <author>
    <name>Dmytro Yashkir</name>
    <email>dima.yashkir@gmail.com</email>
@@ -26,4 +26,3 @@ layout: nil
  {% endfor %}
  
 </feed>
--->
