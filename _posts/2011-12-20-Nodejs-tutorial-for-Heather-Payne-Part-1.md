@@ -68,7 +68,8 @@ Lets start with making a form for our user to put his name into and then be able
 
 Delete the res.writeHead line, we do not want browser to interpret what we send as text after all. And lets add some really simple html instead
 
-     var page = 
+     var page =
+       '<!DOCTYPE html>'+
        '<form>' +
        '<input id=userName name=userName placeholder="enter name" required>'+
        '<button type=submit>Do it!</button>'+
@@ -111,9 +112,9 @@ parseQueryString tells node to parse parameter part of the url (stuff after ?). 
 
    var userName = parsedUrl.query.userName;
 
-Try and reload the page from start. It crashes, this is because original page has no query we need to handle that. Lets check for it
+Lets check that query has name
 
-    if (parsedUrl.query) {
+    if (parsedUrl.query.userName) {
       var userName = parsedUrl.query.userName;
     }
 
@@ -131,7 +132,7 @@ Final result for today should look something like this:
   
       var parsedUrl = url.parse(req.url, parseQueryString=true);
 
-      if (parsedUrl.query) {
+      if (parsedUrl.query.userName) {
         var name = parsedUrl.query.userName;
         res.end(name);
       }else{
@@ -148,4 +149,4 @@ Final result for today should look something like this:
 
 Typing name and hitting button (or enter) should now return user name. Great job! You built a custom HTTP server! Take a break tomorrow we will learn how to read our csv, find the user in it etc
 
-If you have questions or something is broken hit me up me on [twitter](https://twitter.com/#!/dyashkir) oh and follow as well
+If you have questions or something is broken hit me up me on [twitter](https://twitter.com/#!/dyashkir)
