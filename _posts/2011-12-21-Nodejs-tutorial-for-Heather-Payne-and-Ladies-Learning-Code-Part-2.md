@@ -11,7 +11,7 @@ title: Nodejs tutorial for Heather Payne and Ladies Learning Code Part 2
 Day 2
 -----
 
-If you have not read the previous post please check it. To recap we isntalled nodejs, figured out how to make a simple web form to allow user to enter his name, then managed to retrieve that name and return it back. Today we will deal with issue of reading CSV files and extracting the information we want from them.
+If you have not read the previous post please check it. To recap we installed nodejs, figured out how to make a simple web form to allow user to enter his name, then managed to retrieve that name and return it back. Today we will deal with issue of reading CSV(coma separated value) files and extracting the information we want from them.
 
 
 How to deal with our data
@@ -21,7 +21,7 @@ We assume we have a number of files, each has list of names, names are those of 
 
     name, name, name...
 
-When our server starts we need to read all of the csv files we want to use. Next we need to combine them all together. Once we read the files where would we store the data? We want to search by name and then have a counter of how many times that person attended an event. In javascript we can define an object to store data in this way.Insert these couple lines before http.serverCreate
+When our server starts we need to read all of the CSV files we want to use. Next we need to combine them all together. Once we read the files where would we store the data? We want to search by name and then have a counter of how many times that person attended an event. In javascript we can define an object to store data in this way.Insert these couple lines before http.serverCreate
 
     var peopleDictionary = {}; //defines and empty object
     peopleDictionary['dmytro yashkir'] = 1; //its a lie!
@@ -53,11 +53,11 @@ Now you have directory with your data files. Time to read them. To do this we wi
 We will insert this code before our http.createServer statement. This is important because we want this code to execute only when server starts (we will impove this in future tutorial). For now this is good enough.
 
     
-    fs.readdir('csv_data', function(err, files) {
+    fs.readdir('csv_data', function(err, files) { //read the directory
   
-      files.forEach( function (fileName) {
-        fs.readFile('csv_data/' + fileName, 'utf-8', function( err, data){
-          console.log(data);
+      files.forEach( function (fileName) {        //go through all files in directory
+        fs.readFile('csv_data/' + fileName, 'utf-8', function( err, data){ //read
+          console.log(data); //print contents of each file
         });
       });
     });
@@ -73,13 +73,13 @@ Ok we are close
 
 Pieces are falling into place. We have user name, we have data from files, we have data structure to store data. Next we put the file reading and our data structure together. Replace console.log with code to parse a csv file and add names into our datastructure (peopleDictionary)
 
-     var names = data.split(',');
-     names.forEach( function (name) {
-       name = name.trim();
-       if (peopleDictionary[name]){
-         peopleDictionary[name]++;
+     var names = data.split(',');     //separating string in the file based on comas
+     names.forEach( function (name) { //execute code for each name
+       name = name.trim();            //remove spaces and line breaks
+       if (peopleDictionary[name]){   //check if name is already in the dictionary
+         peopleDictionary[name]++;    //increment if name is already present
        }else{
-         peopleDictionary[name] = 1;
+         peopleDictionary[name] = 1;  //new name found set counter to 1
        }
     });
 
@@ -90,7 +90,7 @@ We first trim the name to remove spaces or line breaks. Next we need to handle t
 Final stretch
 -------------
 
-We now have structure with counters for users and name to play with lets assemble it!
+We now have structure with counters for users and name to play with let's assemble it!
 
 In the callback of our http server let us add the code to check how many times the user appeared in the csv files and return that number to the user, or let him know that she never showed up.
 
@@ -98,7 +98,7 @@ In the callback of our http server let us add the code to check how many times t
     //also put everything lower case just like when we handled our csv file
     var name = parsedUrl.query.userName.trim().toLowerCase(); 
 
-    if (peopleDictionary[name]) {
+    if (peopleDictionary[name]) {  //check if name is in the dictionary
       res.end(name + ' has attended ' + peopleDictionary[name] + ' times');
     }else{
       res.end(name + ' never attended :(');
@@ -115,6 +115,6 @@ I put our small server into a public [github repository](https://github.com/dyas
 
 Next step is to have some code to have witty one liners. Should not be too bad. Best to try and do it yourself first. Next week I will cover this, we will also modify out awesome server to be able to serve flat html files (so we do not need to encode our html right in the code). After that we will do some fun AJAX and user side (inside browser) javascript.
 
-Hopefully this has been helpful, I enjoyed writing this. If there are any problem with code, you want to ask any question or offer suggestions contact me on twitter [@dyashkir](https://twitter.com/#!/dyashkir)
+Hopefully this has been helpful, I enjoyed writing this. If there are any problem with code, you want to ask any question or offer suggestions contact me on twitter [@dyashkir](https://twitter.com/#!/dyashkir) or leave comment here.
 
 Happy Holidays!
