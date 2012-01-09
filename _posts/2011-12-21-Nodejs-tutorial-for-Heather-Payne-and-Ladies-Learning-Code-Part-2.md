@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Nodejs tutorial for Heather Payne and Ladies Learning Code Part 2
+title: Node.js tutorial for Heather Payne and Ladies Learning Code Part 2
 ---
 
 {{ page.title }}
@@ -11,7 +11,7 @@ title: Nodejs tutorial for Heather Payne and Ladies Learning Code Part 2
 Day 2
 -----
 
-If you have not read the previous post please check it. To recap we installed nodejs, figured out how to make a simple web form to allow user to enter his name, then managed to retrieve that name and return it back. Today we will deal with issue of reading CSV(coma separated value) files and extracting the information we want from them.
+If you have not read the previous post please check it. To recap we installed Node.js, figured out how to make a simple web form to allow user to enter his name, then managed to retrieve that name and return it back. Today we will deal with issue of reading CSV(coma separated value) files and extracting the information we want from them.
 
 
 How to deal with our data
@@ -21,7 +21,7 @@ We assume we have a number of files, each has list of names, names are those of 
 
     name, name, name...
 
-When our server starts we need to read all of the CSV files we want to use. Next we need to combine them all together. Once we read the files where would we store the data? We want to search by name and then have a counter of how many times that person attended an event. In javascript we can define an object to store data in this way.Insert these couple lines before http.serverCreate
+When our server starts we need to read all of the CSV files we want to use. Next we need to combine them all together. Once we read the files where would we store the data? We want to search by name and then have a counter of how many times that person attended an event. In Javascript we can define an object to store data in this way.Insert these couple lines before http.serverCreate
 
     var peopleDictionary = {}; //defines and empty object
     peopleDictionary['dmytro yashkir'] = 1; //its a lie!
@@ -48,9 +48,9 @@ then we should make few files and populate them with data, call the files anythi
 
     test user
 
-Now you have directory with your data files. Time to read them. To do this we will use fs module of nodejs, fs stands for file system. This is the module that you can use to read, write and manipulate files.
+Now you have directory with your data files. Time to read them. To do this we will use _fs_ module of nodejs, fs stands for file system. This is the module that you can use to read, write and manipulate files.
 
-We will insert this code before our http.createServer statement. This is important because we want this code to execute only when server starts (we will impove this in future tutorial). For now this is good enough.
+We will insert this code before our http.createServer statement. This is important because we want this code to execute only when server starts (we will improve this in a future tutorial). For now this is good enough.
 
     
     fs.readdir('csv_data', function(err, files) { //read the directory
@@ -62,16 +62,16 @@ We will insert this code before our http.createServer statement. This is importa
       });
     });
 
-We will go through this step by step. First we need to know what files we have that we can read for data. For this we read the contents of the csv_data directory. Once that is done the callback that we pass will be called with two parameters (ignore erros for now). Parameter that we called files will contain an array (collection) of all the files in that directory. We are half way there!
+We will go through this step by step. First we need to know what files we have that we can read for data. For this we read the contents of the csv_data directory. Once that is done the callback that we pass will be called with two parameters (ignore errors for now). Parameter that we called files will contain an array (collection) of all the files in that directory. We are half way there!
 
-Next we use .forEach method that all arrays in javascript have. This method/function will call function passed to eat on each element of the array, what this means is that function we pass is called once for every file name.  Next we readFile, this tell node to read all of content of the file (do not worry about 'urf-8' for now). The last parameter is another callback, this one will be called when file is read into memory.
+Next we use .forEach method that all arrays in javascript have. This method/function will call function passed to eat on each element of the array, what this means is that function we pass is called once for every file name.  Next we readFile, this tell node to read all of content of the file (do not worry about 'utf-8' for now). The last parameter is another callback, this one will be called when file is read into memory.
 
 In this last callback we just print out the contents of the file. Rerun node index.js and you should see all of the file contents printed out.
 
 Ok we are close
 ---------------
 
-Pieces are falling into place. We have user name, we have data from files, we have data structure to store data. Next we put the file reading and our data structure together. Replace console.log with code to parse a csv file and add names into our datastructure (peopleDictionary)
+Pieces are falling into place. We have user name, we have data from files, we have data structure to store data. Next we put the file reading and our data structure together. Replace console.log with code to parse a csv file and add names into our data structure (peopleDictionary)
 
      var names = data.split(',');     //separating string in the file based on comas
      names.forEach( function (name) { //execute code for each name
@@ -85,7 +85,7 @@ Pieces are falling into place. We have user name, we have data from files, we ha
 
 First we split the string containing the file using split (, being the delimiter), splitting creates an array of names then we use forEach to execute a function on each element of that array.
 
-We first trim the name to remove spaces or line breaks. Next we need to handle two cases, user being in the structure and not. If user is in the structure *if(peopleDictionary[name])* then we increment the counter using ++ operator in effect adding 1 to the counter of number of times this user has appeared before. In the else part we handle user that we never saw before by setting his counter to 1.
+We first trim the name to remove spaces and line breaks. Next we need to handle two cases, user being in the structure and not. If user is in the structure *if(peopleDictionary[name])* then we increment the counter using ++ operator in effect adding 1 to the counter of number of times this user has appeared before. In the else part we handle user that we never saw before by setting his counter to 1.
 
 Final stretch
 -------------
@@ -113,7 +113,7 @@ We now have a custom built nodejs based http server that on startup reads direct
 
 I put our small server into a public [github repository](https://github.com/dyashkir/nodejs_tutorial_llc) that you can view or get the code from.
 
-Next step is to have some code to have witty one liners. Should not be too bad. Best to try and do it yourself first. Next week I will cover this, we will also modify out awesome server to be able to serve flat html files (so we do not need to encode our html right in the code). After that we will do some fun AJAX and user side (inside browser) javascript.
+Next step is to have some code to have witty one liners. Should not be too bad. Best to try and do it yourself first. Next week I will cover this, we will also modify out awesome server to be able to serve flat html files (so we do not need to encode our html right in the code). After that we will do some fun AJAX and user side (inside browser) Javascript.
 
 Hopefully this has been helpful, I enjoyed writing this. If there are any problem with code, you want to ask any question or offer suggestions contact me on twitter [@dyashkir](https://twitter.com/#!/dyashkir) or leave comment here.
 

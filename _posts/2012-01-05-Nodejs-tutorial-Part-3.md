@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Nodejs tutorial Part 3
+title: Node.js tutorial Part 3
 ---
 
 {{ page.title }}
@@ -11,7 +11,7 @@ title: Nodejs tutorial Part 3
 Final part
 ----------
 
-Last part of the tutorial that uses nodejs to build a simple page to report user attendance of a workshop, data was stored in a CSV file. Only one simple thing left to do. Instead of having our server return the number of times user attended we need to be able to return a clever phrase to the same effect.
+Last part of the tutorial that uses Node.js to build a simple page to report user attendance of a workshop, data was stored in a CSV file. Only one simple thing left to do. Instead of having our server return the number of times user attended we need to be able to return a clever phrase to the same effect.
 
 First we need to have a structure to store the phrases we need to return. Simplest way is to use associative structure we used for counting user attendance.
 
@@ -22,7 +22,7 @@ First we need to have a structure to store the phrases we need to return. Simple
       {limit:10, text: 'Go away stalker!'},
       {limit:100000, text: 'something is terribly wrong'}];
 
-We associated the number of time we want user to attend the workshop before she gets a phrase. Next we need to find which phrase applies to the user, to do this we will loop through the datastructure and check if user attendance has exceeded the limit needed.
+We associated the number of time we want user to attend the workshop before she gets a phrase. Next we need to find which phrase applies to the user, to do this we will loop through the data structure and check if user attendance has exceeded the limit needed.
 
     //first lets retrieve the number of times user attended
     var attendanceNumber = 0;
@@ -52,6 +52,6 @@ Should get lame joke 123 phrase.
 
 Final code can be seen in this repository [https://github.com/dyashkir/nodejs_tutorial_llc](https://github.com/dyashkir/nodejs_tutorial_llc) 
 
-This should cover all of the basic requirements that we had, a lot of things here are not pretty, but they do work and amount of code is manageable with no configuration required and the only installation required is nodejs.
+This should cover all of the basic requirements that we had, a lot of things here are not pretty, but they do work and amount of code is manageable with no configuration required and the only installation required is Nodejs.
 
-I am planning to continue writing nodejs tutorials, perhaps expanding on this problem or playing with something else. Topics I am considering are loading static html instead of hardcoding, connecting to eventbrite service directly, showing how to deploy this on nodejitsu or heroku. If you have any ideas or request let me know. Cheers!
+I am planning to continue writing Nodejs tutorials, perhaps expanding on this problem or playing with something else. Topics I am considering are loading static html instead of hardcoding, connecting to Eventbrite service directly, showing how to deploy this on nodejitsu or heroku. If you have any ideas or request let me know. Cheers!
