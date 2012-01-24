@@ -11,7 +11,7 @@ title: Starting with Redis tutorial
 Install
 -------
 
-Download and run it! [Redis](http://redis.io/download)
+Download and run it: [Redis](http://redis.io/download)
 
 Once the server is running you can use command line Redis utility to connect to it. 
 
@@ -27,7 +27,7 @@ We are going to use Redis to build a simple data model for storing user data, au
 Storing user data
 -----------------
 
-First we probably want to have our users have unique IDs how to make sure that all in case if we have number of clients accessing Redis this id is unique? Simple approach is to use
+First we probably want to have our users have unique IDs. If we have multiple clients accessing and creating users how to ensure that this id is unique. Simple approach is to use
 
     incr current_user_id
 
@@ -47,14 +47,16 @@ this approach is fine, however there are certain improvement that can be made. E
 
     hget user 1
 
-this approach will reduce memory overhead for keys we are storing.
+this approach will reduce memory overhead for keys we are storing. It also allows us to retrieve multiple users at the same time by retrieving multiple entries from the hash.
+
+    hmget user 1 2
 
 What if our user object is large?
 ---------------------------------
 
 However let's consider a relatively large user object. If we store in it in JSON we will need to parse the whole thing every time we retrieve it. If we always need the whole object then this might be acceptable. If the objects are small then it will also work well. But if objects are large and we have many queries where we need only small portion of the object (a pretty common case)?
 
-We can store each user a separate hash!
+We can store each user a separate hash
 
     hset user_1 name Pete
     hset user_1 bday 12938712837
@@ -99,14 +101,13 @@ If we do not care about expirations we can store session in session hash. We can
 Group those users up!
 ---------------------
 
-Usually we need to maintain certain groupings of data. For example want to know all paying customers, all customers that have been banned etc how can we accomplish this? Naive approach to this is ecoding this data into the user key.
+Usually we need to maintain certain groupings of data. For example want to know all paying customers, all customers that have been banned. How can we accomplish this? Redis does not allow us to query value stored under a key. Naive approach to this is encoding this data into the user key.
 
     set user_1_pay_banned '{"bad_idea":"do not do"}'
 
 then using *keys* command to search this. Do not do this. Redis has to go through ALL of your keys, this is really really slow.
 
 Best way is to maintain sets of users and modify them incrementally. Let's use Redis ordered set to maintain, latest user updates.
-
     
     zadd update_time 12837123 user_1
     zadd update_time 12837124 user_2
@@ -128,7 +129,12 @@ If we are using keys to store users we can combine these gets into a single
 
     mget user_5 user_4 user_3
 
+Pipelining
+----------
+
+Most Redis libraries (like node_redis) pipeline your request by default so there is no need to worry about that.
+
 Conclusion
 ----------
 
-When working with Redis these is nothing stopping you from building up a relatively complex data model. Ability to have ordered sets of data, hashes, lists give you a lot of power. Redis forces you to think about how data is being used (optimize common use cases).
+My current project I am using Redis as the main data store, it surprising just how well this works when you know exactly what has to be queried and can use it's structures to help you. It is also damn fast. My Node.js app can run 2 worker processes with 99% cpu utilisation basically doing nothing else but querying Redis for *zrevrange* and *hmget* and Redis instance barely goes over 5% cpu. This is not a scientific benchmark but feels impressive nonetheless. Have fun with it, Redis has more features to explore as well pubsub, transactions, lists, built in Lua interpreter.
